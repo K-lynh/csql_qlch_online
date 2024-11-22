@@ -1,0 +1,217 @@
+use csdl_qlch_online;
+create table nguoi_dung (
+	id_nguoi_dung varchar(255) primary key not null,
+    vai_tro nvarchar(255) default 'Khách hàng' not null,
+    ten_nguoi_dung nvarchar(255) not null,
+    so_dien_thoai char(45) not null,
+    email varchar(255) not null, 
+    mat_khau varchar(255) not null,
+    dia_chi nvarchar(255) not null
+);
+INSERT INTO nguoi_dung (id_nguoi_dung, vai_tro, ten_nguoi_dung, so_dien_thoai, email, mat_khau, dia_chi) VALUES
+(1, 'Khách hàng', 'Phạm Thế Anh', '0981000001', 'a.nguyen@example.com', 'password123', '123 Lê Lợi, HCM'),
+(2, 'Khách hàng', 'Trần Văn Băng', '0981000002', 'b.tran@example.com', 'password123', '456 Trần Phú, HN'),
+(3, 'Quản lý', 'Lê Minh Châu', '0981000003', 'c.le@example.com', 'adminpass456', '789 Hai Bà Trưng, HCM'),
+(4, 'Khách hàng', 'Hoàng Đình Nam', '0981000004', 'd.hoang@example.com', 'password123', '123 Nguyễn Huệ, HCM'),
+(5, 'Khách hàng', 'Phạm Nam Em', '0981000005', 'e.pham@example.com', 'password123', '456 Cộng Hoà, HCM'),
+(6, 'Khách hàng', 'Đỗ Phương Thảo', '0981000006', 'f.do@example.com', 'password123', '789 Chách Mạng Tháng 8, HCM'),
+(7, 'Khách hàng', 'Vũ Như Phương', '0981000007', 'g.vu@example.com', 'password123', '123 Phan Đặng Lưu, HCM'),
+(8, 'Quản lý', 'Ngô Mạnh Nghĩa', '0981000008', 'h.ngo@example.com', 'adminpass456', '456 ĐiỆn Biên Phủ, HN'),
+(9, 'Khách hàng', 'Bùi Xuân Thu', '0981000009', 'i.bui@example.com', 'password123', '789 Võ Thị Sáu, HCM'),
+(10, 'Khách hàng', 'Phạm Kiều Chi', '0981000010', 'j.pham@example.com', 'password123', '123 Đinh Tiên Hoàng, HN'),
+(11, 'Khách hàng', 'Lê Khánh Huyền', '0981000011', 'k.le@example.com', 'password123', '456 Lý Thường Kiệt, HN'),
+(12, 'Khách hàng', 'Trần Quyền Linh', '0981000012', 'l.tran@example.com', 'password123', '789 Pasteur, HCM'),
+(13, 'Khách hàng', 'Hoàng Văn Giáp', '0981000013', 'm.hoang@example.com', 'password123', '123 Nguyễn Đình Chiểu, HCM'),
+(14, 'Khách hàng', 'Nguyền Đình Thắng', '0981000014', 'n.nguyen@example.com', 'password123', '456 Xô Viết Nghệ Tĩnh, HCM'),
+(15, 'Quản lý', 'Dặng Văn Ngữ', '0981000015', 'o.dang@example.com', 'adminpass456', '789 Hoàng VĂn Thụ, HN'),
+(16, 'Khách hàng', 'Phạm Hoà Như', '0981000016', 'p.pham@example.com', 'password123', '123 Khương Đình, HN'),
+(17, 'Khách hàng', 'Vũ Tuyết Chi', '0981000017', 'q.vu@example.com', 'password123', '456 Định Công Hạ, HN'),
+(18, 'Khách hàng', 'Ngô Quang Hy', '0981000018', 'r.ngo@example.com', 'password123', '789 Lê Hồng Phong, HCM'),
+(19, 'Khách hàng', 'Bùi Thế Quang', '0981000019', 's.bui@example.com', 'password123', '123 Cầu Giấy, HN'),
+(20, 'Khách hàng', 'Đỗ Hải Như', '0981000020', 't.do@example.com', 'password123', '456 Nguyễn Trãi, HN');
+
+create table quan_ly_cua_hang (
+	id_quan_ly_cua_hang varchar(255) primary key not null,
+    ngay_bat_dau date not null,
+    chuc_vu nvarchar(255) not null,
+    id_nguoi_dung varchar(255),
+    foreign key (id_nguoi_dung) references nguoi_dung (id_nguoi_dung)
+);
+insert into quan_ly_cua_hang (id_quan_ly_cua_hang, ngay_bat_dau, chuc_vu, id_nguoi_dung) values
+(1, '2023-01-01', 'Quản lý kho', 3),
+(2, '2023-03-15', 'Quản lý bán hàng', 8),
+(3, '2023-05-10', 'Quản lý bán hàng', 15);
+
+create table khach_hang (
+	id_khach_hang varchar(255) primary key not null,
+    ngay_dang_ki date,
+    lich_su_mua_sam nvarchar(255) not null,
+    id_nguoi_dung varchar(255),
+    foreign key (id_nguoi_dung) references nguoi_dung (id_nguoi_dung)
+);
+insert into khach_hang (id_khach_hang, ngay_dang_ki, lich_su_mua_sam, id_nguoi_dung) values
+(1, '2023-01-01', 'Thuốc ho, Vitamin C', 1),
+(2, '2023-02-15', 'Thuốc cảm, Vitamin D, Khẩu trang', 2),
+(3, '2023-03-10', 'Dung dịch sát khuẩn, Gạc y tế', 4),
+(4, '2023-04-25', 'Kem dưỡng da', 5),
+(5, '2023-05-05', 'Thuốc nhỏ mắt, Băng keo cá nhân', 6),
+(6, '2023-06-20', 'Thuốc bổ não, Thuốc cảm, Dầu gội trị gàu', 7),
+(7, '2023-07-30', 'Sữa rửa mặt, Vitamin E, Thuốc giảm đau', 9),
+(8, '2023-08-12', 'Khẩu trang, Cồn y tế', 10),
+(9, '2023-09-01', 'Nhiệt kế điện tử, Thuốc ho', 11),
+(10, '2023-09-18', 'Bông gòn, Dầu khuynh diệp', 12),
+(11, '2023-10-05', '', 13), -- Khách hàng chưa mua gì
+(12, '2023-10-20', 'Dung dịch rửa tay, Vitamin C', 14),
+(13, '2023-11-01', 'Thuốc đau dạ dày, Thuốc giảm đau', 16),
+(14, '2023-11-12', 'Kem chống nắng, Thuốc ho, Dầu gội trị gàu', 17),
+(15, '2023-11-15', 'Vitamin B12', 18),
+(16, '2023-11-16', 'Dung dịch sát khuẩn, Nhiệt kế điện tử', 19),
+(17, '2023-11-16', 'Thuốc bổ não, Khẩu trang, Băng keo cá nhân', 20);
+
+create table thuoc (
+	id_thuoc varchar(255) primary key not null,
+	ten_thuoc nvarchar(255) not null,
+    mo_ta text not null,
+    gia decimal not null,
+    hinh_anh_thuoc varchar(255) not null,
+    thuong_hieu nvarchar(255) not null,
+    noi_san_xuat nvarchar(255) not null,
+    so_luong_ton_kho int not null
+);
+insert into thuoc (id_thuoc, ten_thuoc, mo_ta, gia, hinh_anh_thuoc, thuong_hieu, noi_san_xuat, so_luong_ton_kho) values
+('1', 'Thuốc ho Bảo Thanh', 'Giảm ho, bổ phế, hỗ trợ điều trị viêm họng', 50000, 'images/thuoc-ho-bao-thanh.jpg', 'Bảo Thanh', 'Việt Nam', 100),
+('2', 'Vitamin C 500mg', 'Tăng cường sức đề kháng, chống oxy hóa', 150000, 'images/vitamin-c-500mg.jpg', 'Mega We Care', 'Thái Lan', 200),
+('3', 'Thuốc cảm Efferalgan', 'Hạ sốt, giảm đau do cảm cúm', 30000, 'images/efferalgan.jpg', 'Sanofi', 'Pháp', 150),
+('4', 'Dung dịch sát khuẩn Betadine', 'Kháng khuẩn, hỗ trợ điều trị vết thương', 80000, 'images/betadine.jpg', 'Betadine', 'Mỹ', 120),
+('5', 'Khẩu trang y tế 4 lớp', 'Chống bụi, ngăn ngừa vi khuẩn', 100000, 'images/khau-trang-y-te.jpg', 'Nam Anh', 'Việt Nam', 500),
+('6', 'Gạc y tế tiệt trùng', 'Băng bó vết thương, vô trùng', 25000, 'images/gac-y-te.jpg', 'Medicare', 'Việt Nam', 300),
+('7', 'Thuốc bổ não Ginkgo Biloba', 'Tăng cường tuần hoàn não, cải thiện trí nhớ', 250000, 'images/ginkgo-biloba.jpg', 'Healthy Care', 'Úc', 50),
+('8', 'Kem dưỡng da Nivea', 'Dưỡng ẩm, làm mềm da', 180000, 'images/nivea.jpg', 'Nivea', 'Đức', 100),
+('9', 'Dầu khuynh diệp', 'Giảm đau, chống viêm', 50000, 'images/dau-khuynh-diep.jpg', 'Nhà thuốc Đức Giang', 'Việt Nam', 200),
+('10', 'Nhiệt kế điện tử Omron', 'Đo nhiệt độ cơ thể nhanh chóng', 350000, 'images/omron-thermometer.jpg', 'Omron', 'Nhật Bản', 80),
+('11', 'Thuốc đau dạ dày Yumangel', 'Giảm đau, hỗ trợ điều trị viêm loét dạ dày', 60000, 'images/yumangel.jpg', 'Yuhan', 'Hàn Quốc', 100),
+('12', 'Dung dịch rửa tay Lifebuoy', 'Diệt khuẩn, bảo vệ da tay', 45000, 'images/lifebuoy.jpg', 'Lifebuoy', 'Việt Nam', 400),
+('13', 'Vitamin E 400 IU', 'Dưỡng da, chống oxy hóa', 200000, 'images/vitamin-e.jpg', 'Puritan\'s Pride', 'Mỹ', 150),
+('14', 'Kem chống nắng Anessa', 'Bảo vệ da khỏi tia UV, chống nước', 550000, 'images/anessa.jpg', 'Anessa', 'Nhật Bản', 50),
+('15', 'Thuốc nhỏ mắt V.Rohto', 'Dưỡng mắt, giảm mỏi mắt', 75000, 'images/v-rohto.jpg', 'Rohto', 'Nhật Bản', 120),
+('16', 'Băng keo cá nhân Urgo', 'Bảo vệ vết thương nhỏ, kháng khuẩn', 20000, 'images/urgo.jpg', 'Urgo', 'Pháp', 300),
+('17', 'Thuốc giảm đau Panadol', 'Giảm đau, hạ sốt', 30000, 'images/panadol.jpg', 'GSK', 'Anh', 250),
+('18', 'Sữa rửa mặt Cetaphil', 'Làm sạch da, dịu nhẹ', 220000, 'images/cetaphil.jpg', 'Cetaphil', 'Canada', 100),
+('19', 'Dầu gội trị gàu Head & Shoulders', 'Loại bỏ gàu, nuôi dưỡng tóc', 120000, 'images/head-and-shoulders.jpg', 'P&G', 'Mỹ', 200),
+('20', 'Vitamin B12 1000mcg', 'Hỗ trợ sản xuất hồng cầu, cải thiện sức khỏe', 300000, 'images/vitamin-b12.jpg', 'Nature\'s Bounty', 'Mỹ', 150);
+
+create table gio_hang (
+	id_gio_hang varchar(255) primary key not null,
+    id_khach_hang varchar(255),
+    id_thuoc varchar(255),
+    so_luong int not null,
+    gia_ban decimal not null,
+    foreign key (id_khach_hang) references khach_hang (id_khach_hang),
+    foreign key (id_thuoc) references thuoc (id_thuoc)
+);
+insert into gio_hang (id_gio_hang, id_khach_hang, id_thuoc, so_luong, gia_ban) values
+(1, 1, 1, 2, 50000),    
+(2, 1, 2, 1, 50000),    
+(3, 3, 3, 3, 30000),  
+(4, 4, 4, 1, 20000),   
+(5, 4, 5, 4, 5000),     
+(6, 5, 6, 6, 4000),    
+(7, 7, 7, 2, 70000),    
+(8, 7, 8, 1, 90000),    
+(9, 7, 9, 3, 50000),    
+(10, 8, 10, 4, 80000), 
+(11, 10, 11, 5, 15000), 
+(12, 11, 12, 1, 22500), 
+(13, 11, 13, 2, 40000), 
+(14, 12, 14, 1, 550000),
+(15, 14, 15, 3, 25000), 
+(16, 14, 16, 1, 10000), 
+(17, 14, 17, 2, 30000); 
+
+create table dat_hang (
+	id_dat_hang varchar(255) primary key not null,
+    id_khach_hang varchar(255),
+    ngay_tao date not null,
+    trang_thai nvarchar(255) not null,
+    tong_tien decimal,
+    foreign key (id_khach_hang) references khach_hang (id_khach_hang)
+);
+insert into dat_hang (id_dat_hang, id_khach_hang, ngay_tao, trang_thai, tong_tien) values
+(1, 1, '2024-11-01', 'Đặt hàng thành công', 150000),  
+(2, 3, '2024-11-03', 'Đã huỷ', 90000),  
+(3, 4, '2024-11-04', 'Đặt hàng thành công', 40000),
+(4, 5, '2024-11-05', 'Chờ xử lý', 24000),
+(5, 7, '2024-11-07', 'Đặt hàng thành công', 380000),  
+(6, 8, '2024-11-08', 'Đặt hàng thành công', 320000),
+(7, 10, '2024-11-10', 'Đặt hàng thành công', 75000);
+
+create table chi_tiet_don_hang (
+	id_don_hang varchar(255) primary key not null,
+    id_dat_hang varchar(255),
+    id_thuoc varchar(255),
+    so_luong int not null,
+    don_gia decimal not null,
+    thanh_tien decimal generated always as (so_luong * don_gia) stored,
+    foreign key (id_dat_hang) references dat_hang (id_dat_hang),
+    foreign key (id_thuoc) references thuoc (id_thuoc)
+);
+insert into chi_tiet_don_hang (id_don_hang, id_dat_hang, id_thuoc, so_luong, don_gia) values  
+(1, 1, 1, 2, 50000),   -- Mua 2 thuốc Mã 1, giá 50k mỗi cái, thành tiền tự động được tính  
+(2, 1, 2, 1, 50000),   -- Mua 1 thuốc Mã 2, giá 50k mỗi cái, thành tiền tự động được tính  
+(3, 2, 3, 3, 30000),   -- Mua 3 thuốc Mã 3, giá 30k mỗi cái, thành tiền tự động được tính  
+(4, 3, 4, 1, 20000),   -- Mua 1 thuốc Mã 4, giá 20k mỗi cái, thành tiền tự động được tính  
+(5, 3, 5, 4, 5000),    -- Mua 4 thuốc Mã 5, giá 5k mỗi cái, thành tiền tự động được tính  
+(6, 4, 6, 6, 4000),    -- Mua 6 thuốc Mã 6, giá 4k mỗi cái, thành tiền tự động được tính  
+(7, 5, 7, 2, 70000),   -- Mua 2 thuốc Mã 7, giá 70k mỗi cái, thành tiền tự động được tính  
+(8, 5, 8, 1, 90000),   -- Mua 1 thuốc Mã 8, giá 90k mỗi cái, thành tiền tự động được tính  
+(9, 5, 9, 3, 50000),   -- Mua 3 thuốc Mã 9, giá 50k mỗi cái, thành tiền tự động được tính  
+(10, 6, 10, 4, 80000); -- Mua 4 thuốc Mã 10, giá 80k mỗi cái, thành tiền tự động được tính
+
+create table thanh_toan (
+	id_thanh_toan varchar(255) primary key not null,
+    id_dat_hang varchar(255),
+    trang_thai_thanh_toan nvarchar(255) default 'Chưa thanh toán' not null,
+    so_tien decimal not null,
+    phuong_thuc_thanh_toan nvarchar(255) default 'Thanh toán khi nhận hàng' not null,
+    foreign key (id_dat_hang) references dat_hang (id_dat_hang)
+);
+insert into thanh_toan (id_thanh_toan, id_dat_hang, trang_thai_thanh_toan, so_tien, phuong_thuc_thanh_toan) values
+(1, 1, 'Đã thanh toán', 150000.00, 'Thẻ tín dụng'),     
+(2, 2, 'Chưa thanh toán', 60000.00, 'Thanh toán khi nhận hàng'),     
+(3, 3, 'Đã thanh toán', 40000.00, 'Thanh toán khi nhận hàng'),          
+(4, 4, 'Đang xử lý', 24000.00, 'Thanh toán khi nhận hàng'),            
+(5, 5, 'Đã hoàn tiền', 380000.00, 'Thẻ tín dụng'),       
+(6, 6, 'Đã thanh toán', 320000.00, 'Thẻ tín dụng');      
+
+create table van_chuyen (
+	id_van_chuyen varchar(255) primary key not null,
+    id_dat_hang varchar(255),
+    trang_thai_van_chuyen nvarchar(255) default 'Chưa hoàn thành' not null,
+    phuong_thuc_van_chuyen nvarchar(255) default 'Tiêu chuẩn' not null,
+    ngay_giao_hang date,
+    ngay_van_chuyen date,
+    foreign key (id_dat_hang) references dat_hang (id_dat_hang)
+);
+insert into van_chuyen (id_van_chuyen, id_dat_hang, trang_thai_van_chuyen, phuong_thuc_van_chuyen, ngay_giao_hang, ngay_van_chuyen) values
+(1, 1, 'Đã giao hàng', 'Nhanh', '2024-11-7', '2024-11-08'), 
+(3, 3, 'Chưa giao', 'Tiêu chuẩn', '2024-11-16', '2024-11-18'),
+(4, 4, 'Đang giao', 'Nhanh', '2024-11-17', '2024-11-15'), 
+(5, 5, 'Hủy giao hàng', 'Tiết kiệm', null, '2024-11-10'), 
+(6, 6, 'Đã giao hàng', 'Tiêu chuẩn', '2024-11-12', '2024-11-10'); 
+
+create table danh_gia (
+	id_danh_gia varchar(255) primary key not null,
+    id_khach_hang varchar(255),
+    id_thuoc varchar(255),
+    diem_xep_hang int default '5',
+    binh_luan text,
+    ngay_danh_gia date,
+    foreign key (id_khach_hang) references khach_hang (id_khach_hang),
+    foreign key (id_thuoc) references thuoc (id_thuoc)
+);
+insert into danh_gia (id_danh_gia, id_khach_hang, id_thuoc, diem_xep_hang, binh_luan, ngay_danh_gia) values
+(1, 1, 1, 5, 'Sản phẩm rất tốt, giao hàng nhanh.', '2024-11-10'),
+(3, 3, 5, 3, 'Tác dụng trung bình, giá hơi cao.', '2024-11-13'),
+(4, 4, 2, 2, 'Đóng gói kém, sản phẩm bị hư hỏng.', '2024-11-14'),
+(5, 1, 4, 4, 'Giao hàng đúng hẹn, thuốc ổn.', '2024-11-15'),
+(6, 2, 6, 5, 'Dịch vụ tuyệt vời, rất hài lòng.', '2024-11-16');
