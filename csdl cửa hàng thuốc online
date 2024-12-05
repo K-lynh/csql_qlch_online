@@ -1,0 +1,394 @@
+CREATE DATABASE csdl_ch_online;
+CREATE TABLE nguoi_dung (
+    id_nguoi_dung VARCHAR(15) NOT NULL DEFAULT 'Khách hàng',
+    vai_tro NVARCHAR(40) NOT NULL,
+    ten_nguoi_dung NVARCHAR(40) NOT NULL,
+    so_dien_thoai CHAR(15) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    mat_khau VARCHAR(40) NOT NULL,
+    dia_chi NVARCHAR(100) NOT NULL,
+    CONSTRAINT pk_nguoi_dung PRIMARY KEY (id_nguoi_dung)
+);
+
+CREATE TABLE quan_ly_cua_hang (
+    id_quan_ly_cua_hang VARCHAR(15) NOT NULL,
+    ngay_bat_dau DATE NOT NULL,
+    chuc_vu NVARCHAR(40) NOT NULL,
+    id_nguoi_dung VARCHAR(15) NOT NULL,
+    CONSTRAINT pk_quan_ly_cua_hang PRIMARY KEY (id_quan_ly_cua_hang)
+);
+
+CREATE TABLE khach_hang (
+    id_khach_hang VARCHAR(40) NOT NULL,
+    ngay_dang_ki DATE,
+    CONSTRAINT pk_khach_hang PRIMARY KEY (id_khach_hang)
+);
+
+CREATE TABLE thuoc (
+    id_thuoc VARCHAR(40) NOT NULL,
+    ten_thuoc NVARCHAR(40) NOT NULL,
+    mo_ta TEXT,
+    gia DECIMAL NOT NULL,
+    hinh_anh_thuoc VARCHAR(255),
+    noi_san_xuat NVARCHAR(100),
+    thuong_hieu NVARCHAR(100),
+    so_luong_ton_kho INT NOT NULL,
+    CONSTRAINT pk_thuoc PRIMARY KEY (id_thuoc)
+);
+
+CREATE TABLE gio_hang (
+    id_gio_hang VARCHAR(40) NOT NULL,
+    id_khach_hang VARCHAR(40) NOT NULL,
+    id_thuoc VARCHAR(40) NOT NULL,
+    so_luong INT NOT NULL,
+    gia_ban DECIMAL NOT NULL,
+    CONSTRAINT pk_gio_hang PRIMARY KEY (id_gio_hang)
+);
+
+CREATE TABLE don_hang (
+    id_don_hang VARCHAR(40) NOT NULL,
+    id_khach_hang VARCHAR(40) NOT NULL,
+    ngay_dat_hang DATE NOT NULL,
+    tong_tien DECIMAL NOT NULL,
+    trang_thai NVARCHAR(40) NOT NULL,
+    CONSTRAINT pk_dat_hang PRIMARY KEY (id_don_hang)
+);
+
+CREATE TABLE chi_tiet_don_hang (
+    id_chi_tiet_don_hang VARCHAR(40) NOT NULL,
+    id_don_hang VARCHAR(40) NOT NULL,
+    id_thuoc VARCHAR(40) NOT NULL,
+    so_luong INT NOT NULL,
+    gia_ban DECIMAL NOT NULL,
+    thanh_tien DECIMAL AS (so_luong * gia_ban) STORED,
+    CONSTRAINT pk_chi_tiet_don_hang PRIMARY KEY (id_chi_tiet_don_hang)
+);
+
+CREATE TABLE thanh_toan (
+    id_thanh_toan VARCHAR(40) NOT NULL,
+    id_dat_hang VARCHAR(40) NOT NULL,
+    phuong_thuc_thanh_toan NVARCHAR(40) NOT NULL,
+    so_tien DECIMAL NOT NULL,
+    trang_thai_thanh_toan NVARCHAR(40) NOT NULL DEFAULT 'Chưa thanh toán',
+    ngay_thanh_toan DATE NOT NULL,
+    CONSTRAINT pk_thanh_toan PRIMARY KEY (id_thanh_toan)
+);
+
+CREATE TABLE van_chuyen (
+    id_van_chuyen VARCHAR(40) NOT NULL,
+    id_dat_hang VARCHAR(40) NOT NULL,
+    ngay_van_chuyen DATE NOT NULL,
+    ngay_giao_hang DATE NOT NULL,
+    trang_thai_van_chuyen NVARCHAR(40) NOT NULL DEFAULT 'Chưa hoàn thành',
+    CONSTRAINT pk_van_chuyen PRIMARY KEY (id_van_chuyen)
+);
+
+CREATE TABLE danh_gia (
+    id_danh_gia VARCHAR(40) NOT NULL,
+    id_khach_hang VARCHAR(40) NOT NULL,
+    id_thuoc VARCHAR(40) NOT NULL,
+    diem_danh_gia INT NOT NULL DEFAULT 5, 
+    binh_luan TEXT,
+    ngay_danh_gia DATE NOT NULL,
+    CONSTRAINT pk_danh_gia PRIMARY KEY (id_danh_gia)
+);
+
+-- Bảng quan_ly_cua_hang
+ALTER TABLE quan_ly_cua_hang
+ADD CONSTRAINT fk_quan_ly_cua_hang_nguoi_dung FOREIGN KEY (id_nguoi_dung)
+REFERENCES nguoi_dung(id_nguoi_dung);
+
+-- Bảng khach_hang
+ALTER TABLE khach_hang
+ADD CONSTRAINT fk_khach_hang_nguoi_dung FOREIGN KEY (id_khach_hang)
+REFERENCES nguoi_dung(id_nguoi_dung);
+
+-- Bảng gio_hang
+ALTER TABLE gio_hang
+ADD CONSTRAINT fk_gio_hang_khach_hang FOREIGN KEY (id_khach_hang)
+REFERENCES khach_hang(id_khach_hang),
+ADD CONSTRAINT fk_gio_hang_thuoc FOREIGN KEY (id_thuoc)
+REFERENCES thuoc(id_thuoc);
+
+-- Bảng don_hang
+ALTER TABLE don_hang
+ADD CONSTRAINT fk_don_hang_khach_hang FOREIGN KEY (id_khach_hang)
+REFERENCES khach_hang(id_khach_hang);
+
+-- Bảng chi_tiet_don_hang
+ALTER TABLE chi_tiet_don_hang
+ADD CONSTRAINT fk_chi_tiet_don_hang_don_hang FOREIGN KEY (id_don_hang)
+REFERENCES don_hang(id_don_hang),
+ADD CONSTRAINT fk_chi_tiet_don_hang_thuoc FOREIGN KEY (id_thuoc)
+REFERENCES thuoc(id_thuoc);
+
+-- Bảng thanh_toan
+ALTER TABLE thanh_toan
+ADD CONSTRAINT fk_thanh_toan_don_hang FOREIGN KEY (id_dat_hang)
+REFERENCES don_hang(id_don_hang);
+
+-- Bảng van_chuyen
+ALTER TABLE van_chuyen
+ADD CONSTRAINT fk_van_chuyen_don_hang FOREIGN KEY (id_dat_hang)
+REFERENCES don_hang(id_don_hang);
+
+-- Bảng danh_gia
+ALTER TABLE danh_gia
+ADD CONSTRAINT fk_danh_gia_khach_hang FOREIGN KEY (id_khach_hang)
+REFERENCES khach_hang(id_khach_hang),
+ADD CONSTRAINT fk_danh_gia_thuoc FOREIGN KEY (id_thuoc)
+REFERENCES thuoc(id_thuoc);
+
+-- Bảng nguoi_dung
+INSERT INTO nguoi_dung (id_nguoi_dung, vai_tro, ten_nguoi_dung, so_dien_thoai, email, mat_khau, dia_chi) VALUES
+('ND001', 'Khách hàng', 'Nguyen Van A', '0912345678', 'a@example.com', 'pass123', '123 Street A'),
+('ND002', 'Quản lý', 'Le Thi B', '0987654321', 'b@example.com', 'pass123', '456 Street B'),
+('ND003', 'Khách hàng', 'Tran Van C', '0909123456', 'c@example.com', 'pass123', '789 Street C'),
+('ND004', 'Nhân viên', 'Pham Thi D', '0912456789', 'd@example.com', 'pass123', '101 Street D'),
+('ND005', 'Khách hàng', 'Hoang Van E', '0923456781', 'e@example.com', 'pass123', '202 Street E');
+
+-- Bảng quan_ly_cua_hang
+INSERT INTO quan_ly_cua_hang (id_quan_ly_cua_hang, ngay_bat_dau, chuc_vu, id_nguoi_dung) VALUES
+('QL001', '2023-01-01', 'Quản lý', 'ND002'),
+('QL002', '2023-02-15', 'Quản lý', 'ND004'),
+('QL003', '2023-03-10', 'Quản lý', 'ND002'),
+('QL004', '2023-04-05', 'Trợ lý quản lý', 'ND004'),
+('QL005', '2023-05-20', 'Quản lý', 'ND002');
+
+-- Bảng khach_hang
+INSERT INTO khach_hang (id_khach_hang, ngay_dang_ki) VALUES
+('ND001', '2023-01-05'),
+('ND003', '2023-02-10'),
+('ND005', '2023-03-15'),
+('ND006', '2023-04-20'),
+('ND007', '2023-05-25');
+
+-- Bảng thuoc
+INSERT INTO thuoc (id_thuoc, ten_thuoc, mo_ta, gia, hinh_anh_thuoc, noi_san_xuat, thuong_hieu, so_luong_ton_kho) VALUES
+('T001', 'Thuốc A', 'Thuốc giảm đau', 50000, 'hinhA.jpg', 'Việt Nam', 'Hãng A', 100),
+('T002', 'Thuốc B', 'Thuốc cảm cúm', 30000, 'hinhB.jpg', 'Việt Nam', 'Hãng B', 200),
+('T003', 'Thuốc C', 'Vitamin C', 25000, 'hinhC.jpg', 'Mỹ', 'Hãng C', 150),
+('T004', 'Thuốc D', 'Thuốc bổ', 60000, 'hinhD.jpg', 'Nhật Bản', 'Hãng D', 120),
+('T005', 'Thuốc E', 'Thuốc đau đầu', 55000, 'hinhE.jpg', 'Pháp', 'Hãng E', 80);
+
+-- Bảng gio_hang
+INSERT INTO gio_hang (id_gio_hang, id_khach_hang, id_thuoc, so_luong, gia_ban) VALUES
+('GH001', 'ND001', 'T001', 2, 50000),
+('GH002', 'ND003', 'T002', 1, 30000),
+('GH003', 'ND005', 'T003', 3, 25000),
+('GH004', 'ND006', 'T004', 1, 60000),
+('GH005', 'ND007', 'T005', 2, 55000);
+
+-- Bảng don_hang
+INSERT INTO don_hang (id_don_hang, id_khach_hang, ngay_dat_hang, tong_tien, trang_thai) VALUES
+('DH001', 'ND001', '2023-01-15', 100000, 'Đang xử lý'),
+('DH002', 'ND003', '2023-02-18', 30000, 'Đã giao'),
+('DH003', 'ND005', '2023-03-22', 75000, 'Đang vận chuyển'),
+('DH004', 'ND006', '2023-04-25', 60000, 'Đang xử lý'),
+('DH005', 'ND007', '2023-05-30', 110000, 'Đã giao');
+
+-- Bảng chi_tiet_don_hang
+INSERT INTO chi_tiet_don_hang (id_chi_tiet_don_hang, id_don_hang, id_thuoc, so_luong, gia_ban) VALUES
+('CTDH001', 'DH001', 'T001', 2, 50000),
+('CTDH002', 'DH002', 'T002', 1, 30000),
+('CTDH003', 'DH003', 'T003', 3, 25000),
+('CTDH004', 'DH004', 'T004', 1, 60000),
+('CTDH005', 'DH005', 'T005', 2, 55000);
+
+-- Bảng thanh_toan
+INSERT INTO thanh_toan (id_thanh_toan, id_dat_hang, phuong_thuc_thanh_toan, so_tien, trang_thai_thanh_toan, ngay_thanh_toan) VALUES
+('TT001', 'DH001', 'Thẻ tín dụng', 100000, 'Đã thanh toán', '2023-01-16'),
+('TT002', 'DH002', 'Tiền mặt', 30000, 'Đã thanh toán', '2023-02-19'),
+('TT003', 'DH003', 'Thẻ tín dụng', 75000, 'Đã thanh toán', '2023-03-23'),
+('TT004', 'DH004', 'Chuyển khoản', 60000, 'Chưa thanh toán', '2023-04-26'),
+('TT005', 'DH005', 'Thẻ tín dụng', 110000, 'Đã thanh toán', '2023-05-31');
+
+-- Bảng van_chuyen
+INSERT INTO van_chuyen (id_van_chuyen, id_dat_hang, ngay_van_chuyen, ngay_giao_hang, trang_thai_van_chuyen) VALUES
+('VC001', 'DH001', '2023-01-17', '2023-01-20', 'Hoàn thành'),
+('VC002', 'DH002', '2023-02-20', '2023-02-23', 'Hoàn thành'),
+('VC003', 'DH003', '2023-03-24', '2023-03-28', 'Đang vận chuyển'),
+('VC004', 'DH004', '2023-04-27', '2023-04-30', 'Đang xử lý'),
+('VC005', 'DH005', '2023-05-31', '2023-06-03', 'Hoàn thành');
+
+-- Bảng danh_gia
+INSERT INTO danh_gia (id_danh_gia, id_khach_hang, id_thuoc, diem_danh_gia, binh_luan, ngay_danh_gia) VALUES
+('DG001', 'ND001', 'T001', 5, 'Rất tốt', '2023-01-18'),
+('DG002', 'ND003', 'T002', 4, 'Khá hài lòng', '2023-02-21'),
+('DG003', 'ND005', 'T003', 3, 'Bình thường', '2023-03-25'),
+('DG004', 'ND006', 'T004', 5, 'Xuất sắc', '2023-04-28'),
+('DG005', 'ND007', 'T005', 2, 'Không hài lòng', '2023-06-01');
+
+-- Tạo view
+-- View danh sách thuốc và thông tin cơ bản
+CREATE VIEW view_danh_sach_thuoc AS
+SELECT 
+    id_thuoc,
+    ten_thuoc,
+    mo_ta,
+    gia,
+    hinh_anh_thuoc,
+    thuong_hieu,
+    noi_san_xuat,
+    so_luong_ton_kho
+FROM thuoc;
+
+-- View danh sách đơn hàng chi tiết
+CREATE VIEW vw_danh_sach_don_hang_chi_tiet AS
+SELECT 
+    dh.id_dat_hang,
+    nd.ten_nguoi_dung,  -- Sử dụng bảng nguoi_dung
+    dh.ngay_tao,
+    dh.trang_thai,
+    dh.tong_tien,
+    ctdh.id_thuoc,
+    t.ten_thuoc,
+    ctdh.so_luong,
+    ctdh.don_gia,
+    ctdh.thanh_tien
+FROM 
+    dat_hang dh
+JOIN 
+    khach_hang kh ON dh.id_khach_hang = kh.id_khach_hang
+JOIN 
+    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung  -- Thêm JOIN với nguoi_dung
+JOIN 
+    chi_tiet_don_hang ctdh ON dh.id_dat_hang = ctdh.id_dat_hang
+JOIN 
+    thuoc t ON ctdh.id_thuoc = t.id_thuoc;
+
+-- View tổng doanh thu theo tháng
+CREATE VIEW vw_tong_doanh_thu_theo_thang AS
+SELECT 
+    MONTH(dh.ngay_tao) AS thang,
+    YEAR(dh.ngay_tao) AS nam,
+    SUM(dh.tong_tien) AS tong_doanh_thu
+FROM 
+    dat_hang dh
+WHERE 
+    dh.trang_thai = 'Đặt hàng thành công'
+GROUP BY 
+    MONTH(dh.ngay_tao), YEAR(dh.ngay_tao)
+ORDER BY 
+    nam, thang;
+
+-- View trạng thái vận chuyển
+CREATE VIEW vw_trang_thai_van_chuyen AS
+SELECT 
+    vc.id_van_chuyen,
+    dh.id_dat_hang,
+    vc.trang_thai_van_chuyen,
+    vc.phuong_thuc_van_chuyen,
+    vc.ngay_giao_hang,
+    vc.ngay_van_chuyen
+FROM 
+    van_chuyen vc
+JOIN 
+    dat_hang dh ON vc.id_dat_hang = dh.id_dat_hang;
+
+-- View đánh giá sản phẩm
+CREATE VIEW vw_danh_gia_san_pham AS
+SELECT 
+    d.id_danh_gia,
+    nd.ten_nguoi_dung,  -- Sử dụng bảng nguoi_dung để lấy tên người dùng
+    t.ten_thuoc,
+    d.diem_xep_hang,
+    d.binh_luan,
+    d.ngay_danh_gia
+FROM 
+    danh_gia d
+JOIN 
+    khach_hang kh ON d.id_khach_hang = kh.id_khach_hang
+JOIN 
+    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung  -- Thêm JOIN với nguoi_dung
+JOIN 
+    thuoc t ON d.id_thuoc = t.id_thuoc;
+
+-- View thống kê tồn kho
+CREATE VIEW view_ton_kho AS
+SELECT 
+    id_thuoc,
+    ten_thuoc,
+    so_luong_ton_kho,
+    CASE 
+        WHEN so_luong_ton_kho < 10 THEN 'Cần nhập thêm'
+        ELSE 'Đủ hàng'
+    END AS trang_thai_ton_kho
+FROM thuoc;
+
+--Tạo Truy vấn
+-- Truy vấn khách hàng mua nhiều nhất
+SELECT 
+    nd.id_nguoi_dung,
+    nd.ten_nguoi_dung,
+    nd.so_dien_thoai,
+    nd.email,
+    nd.dia_chi,
+    COUNT(dh.id_khach_hang) AS so_luong_don_hang
+FROM
+    nguoi_dung AS nd
+        INNER JOIN
+    (khach_hang AS kh
+    INNER JOIN dat_hang AS dh ON kh.id_khach_hang = dh.id_khach_hang) ON kh.id_nguoi_dung = nd.id_nguoi_dung
+WHERE
+    nd.vai_tro = 'Khách hàng'
+GROUP BY kh.id_khach_hang
+ORDER BY so_luong_don_hang DESC;
+
+-- Truy vấn sản phẩm bán chạy nhất
+SELECT 
+    t.id_thuoc,
+    t.ten_thuoc,
+    t.mo_ta,
+    t.gia,
+    SUM(ctdh.so_luong) AS tong_so_luong
+FROM
+    (thuoc AS t
+    INNER JOIN (chi_tiet_don_hang AS ctdh) ON ctdh.id_thuoc = t.id_thuoc)
+GROUP BY t.id_thuoc
+ORDER BY tong_so_luong DESC
+
+-- Truy vấn doanh thu theo từng khách hàng
+SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+SELECT 
+    nd.id_nguoi_dung,
+    nd.vai_tro,
+    nd.ten_nguoi_dung,
+    nd.email,
+    nd.so_dien_thoai,
+    nd.dia_chi,
+    kh.ngay_dang_ki,
+    dh.id_dat_hang,
+    SUM(ctdh.thanh_tien) AS doanh_thu_theo_nguoi_dung
+FROM
+    ((nguoi_dung AS nd
+    INNER JOIN (khach_hang AS kh
+    INNER JOIN dat_hang AS dh ON dh.id_khach_hang = kh.id_khach_hang AND dh.trang_thai = 'Đặt hàng thành công') ON kh.id_nguoi_dung = nd.id_nguoi_dung)
+    INNER JOIN chi_tiet_don_hang AS ctdh ON ctdh.id_dat_hang = dh.id_dat_hang)
+GROUP BY nd.id_nguoi_dung
+ORDER BY doanh_thu_theo_nguoi_dung DESC;
+
+-- Truy vấn đơn hàng đang giao hoặc bị huỷ
+SELECT 
+    *
+FROM
+    dat_hang
+WHERE
+    trang_thai IN ('Đã hủy' , 'Chờ xử lý', 'Đang giao');
+
+-- Truy vấn sản phẩm có đánh giá thấp
+SELECT 
+    t.*, dg.binh_luan, AVG(dg.diem_xep_hang) AS xep_hang
+FROM
+    (thuoc AS t
+    INNER JOIN danh_gia AS dg ON dg.id_thuoc = t.id_thuoc)
+GROUP BY t.id_thuoc
+ORDER BY dg.diem_xep_hang DESC;
+
+-- Truy vấn thuốc cần nhập thêm
+SELECT 
+    id_thuoc,
+    ten_thuoc,
+    so_luong_ton_kho
+FROM thuoc
+WHERE so_luong_ton_kho < 10;
