@@ -1,226 +1,247 @@
-CREATE DATABASE csdl_ch_online;
+CREATE DATABASE csdl_qlch_online;
+USE csdl_qlch_online 
+
+GO
 CREATE TABLE nguoi_dung (
-    id_nguoi_dung VARCHAR(15) NOT NULL DEFAULT 'Khách hàng',
+    id_nguoi_dung VARCHAR(255) PRIMARY KEY DEFAULT 'Khách hàng',
     vai_tro NVARCHAR(40) NOT NULL,
     ten_nguoi_dung NVARCHAR(40) NOT NULL,
-    so_dien_thoai CHAR(15) NOT NULL,
-    email VARCHAR(40) NOT NULL,
-    mat_khau VARCHAR(40) NOT NULL,
-    dia_chi NVARCHAR(100) NOT NULL,
-    CONSTRAINT pk_nguoi_dung PRIMARY KEY (id_nguoi_dung)
+    so_dien_thoai CHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    mat_khau VARCHAR(255) NOT NULL,
+    dia_chi NVARCHAR(40) NOT NULL
 );
+INSERT INTO nguoi_dung (id_nguoi_dung, vai_tro, ten_nguoi_dung, so_dien_thoai, email, mat_khau, dia_chi, gioi_tinh) 
+VALUES
+(1, 'Khách hàng', 'Phạm Thế Anh', '0981000001', 'a.nguyen@example.com', 'password123', '123 Lê Lợi, HCM', 'Nam'),
+(2, 'Khách hàng', 'Trần Văn Bằng', '0981000002', 'b.tran@example.com', 'password123', '456 Trần Phú, HN', 'Nam'),
+(3, 'Quản lý', 'Lê Minh Châu', '0981000003', 'c.le@example.com', 'adminpass456', '789 Hai Bà Trưng, HCM', 'Nam'),
+(4, 'Khách hàng', 'Hoàng Đình Nam', '0981000004', 'd.hoang@example.com', 'password123', '123 Nguyễn Huệ, HCM', 'Nam'),
+(5, 'Khách hàng', 'Phạm Nam Em', '0981000005', 'e.pham@example.com', 'password123', '456 Cộng Hoà, HCM', 'Nam'),
+(6, 'Khách hàng', 'Đỗ Phương Thảo', '0981000006', 'f.do@example.com', 'password123', '789 Chách Mạng Tháng 8, HCM', 'Nam'),
+(7, 'Khách hàng', 'Vũ Như Phương', '0981000007', 'g.vu@example.com', 'password123', '123 Phan Đăng Lưu, HCM', 'Nam'),
+(8, 'Quản lý', 'Ngô Mạnh Nghĩa', '0981000008', 'h.ngo@example.com', 'adminpass456', '456 Điện Biên Phủ, HN', 'Nam'),
+(9, 'Khách hàng', 'Bùi Xuân Thu', '0981000009', 'i.bui@example.com', 'password123', '789 Võ Thị Sáu, HCM', 'Nam'),
+(10, 'Khách hàng', 'Phạm Kiều Chi', '0981000010', 'j.pham@example.com', 'password123', '123 Đinh Tiên Hoàng, HN', 'Nam'),
+(11, 'Khách hàng', 'Lê Khánh Huyền', '0981000011', 'k.le@example.com', 'password123', '456 Lý Thường Kiệt, HN', 'Nam'),
+(12, 'Khách hàng', 'Trần Quyền Linh', '0981000012', 'l.tran@example.com', 'password123', '789 Pasteur, HCM', 'Nam'),
+(13, 'Khách hàng', 'Hoàng Văn Giáp', '0981000013', 'm.hoang@example.com', 'password123', '123 Nguyễn Đình Chiểu, HCM', 'Nam'),
+(14, 'Khách hàng', 'Nguyễn Đình Thắng', '0981000014', 'n.nguyen@example.com', 'password123', '456 Xô Viết Nghệ Tĩnh, HCM', 'Nam'),
+(15, 'Quản lý', 'Đặng Văn Ngữ', '0981000015', 'o.dang@example.com', 'adminpass456', '789 Hoàng Văn Thụ, HCM', 'Nam'),
+(16, 'Khách hàng', 'Phạm Hoà Như', '0981000016', 'p.pham@example.com', 'password123', '123 Khương Đình, HCM', 'Nam'),
+(17, 'Khách hàng', 'Vũ Tuyết Chi', '0981000017', 'q.vu@example.com', 'password123', '456 Định Công Hạ, HN', 'Nam'),
+(18, 'Khách hàng', 'Ngô Quang Hy', '0981000018', 'r.ngo@example.com', 'password123', '789 Lê Hồng Phong, HN', 'Nam'),
+(19, 'Khách hàng', 'Bùi Thế Quang', '0981000019', 's.bui@example.com', 'password123', '123 Cầu Giấy, HN', 'Nam'),
+(20, 'Khách hàng', 'Đỗ Hải Như', '0981000020', 't.do@example.com', 'password123', '456 Nguyễn Trãi, HN', 'Nam');
 
+GO
 CREATE TABLE quan_ly_cua_hang (
-    id_quan_ly_cua_hang VARCHAR(15) NOT NULL,
+    id_quan_ly_cua_hang VARCHAR(255) PRIMARY KEY,
     ngay_bat_dau DATE NOT NULL,
     chuc_vu NVARCHAR(40) NOT NULL,
-    id_nguoi_dung VARCHAR(15) NOT NULL,
-    CONSTRAINT pk_quan_ly_cua_hang PRIMARY KEY (id_quan_ly_cua_hang)
+    id_nguoi_dung VARCHAR(255),
+    FOREIGN KEY (id_nguoi_dung) REFERENCES nguoi_dung(id_nguoi_dung)
 );
+INSERT INTO quan_ly_cua_hang (id_quan_ly_cua_hang, ngay_bat_dau, chuc_vu, id_nguoi_dung) 
+VALUES
+(1, '2023-01-01', 'Quản lý kho', 3),
+(2, '2023-03-15', 'Quản lý bán hàng', 8),
+(3, '2023-05-10', 'Quản lý bán hàng', 15);
 
+GO
 CREATE TABLE khach_hang (
-    id_khach_hang VARCHAR(40) NOT NULL,
+    id_khach_hang VARCHAR(255) PRIMARY KEY,
     ngay_dang_ki DATE,
-    CONSTRAINT pk_khach_hang PRIMARY KEY (id_khach_hang)
+    lich_su_mua_hang VARCHAR(255),
+    id_nguoi_dung VARCHAR(255),
+    FOREIGN KEY (id_khach_hang) REFERENCES nguoi_dung(id_nguoi_dung)
 );
+INSERT INTO lich_su_mua_sam (id_khach_hang, ngay_dang_ki, lich_su_mua_sam, id_nguoi_dung) 
+VALUES
+(1, '2023-01-01', 'Thuốc ho, Vitamin C', 1),
+(2, '2023-02-15', 'Thuốc cảm, Vitamin D, Khẩu trang', 2),
+(3, '2023-03-10', 'Dung dịch sát khuẩn, Gạc y tế', 3),
+(4, '2023-04-25', 'Kem dưỡng da', 4),
+(5, '2023-05-05', 'Thuốc nhỏ mắt, Băng keo cá nhân', 5),
+(6, '2023-06-20', 'Thuốc bổ não, Thuốc cảm, Dầu gội trị gàu', 6),
+(7, '2023-07-30', 'Sữa rửa mặt, Vitamin E, Thuốc giảm đau', 7),
+(8, '2023-08-12', 'Khẩu trang, Cồn y tế', 8),
+(9, '2023-09-01', 'Nhiệt kế điện tử, Thuốc ho', 9),
+(10, '2023-09-18', 'Bông gòn, Dầu khuynh diệp', 10),
+(11, '2023-10-05', 'Dung dịch rửa tay, Vitamin C', 11),
+(12, '2023-10-20', 'Dung dịch rửa tay, Vitamin C', 12),
+(13, '2023-11-01', 'Thuốc đau dạ dày, Thuốc giảm đau', 13),
+(14, '2023-11-12', 'Kem chống nắng, Thuốc ho, Dầu gội trị gàu', 14),
+(15, '2023-11-15', 'Vitamin B12', 15),
+(16, '2023-11-16', 'Dung dịch sát khuẩn, Nhiệt kế điện tử', 16),
+(17, '2023-11-16', 'Thuốc bổ não, Khẩu trang, Băng keo cá nhân', 17),
+(18, '2023-11-16', 'Thuốc bổ não, Khẩu trang, Băng keo cá nhân', 18),
+(19, '2023-11-16', 'Dung dịch sát khuẩn, Nhiệt kế điện tử', 19),
+(20, '2023-11-16', 'Thuốc bổ não, Khẩu trang, Băng keo cá nhân', 20);
 
+GO
 CREATE TABLE thuoc (
-    id_thuoc VARCHAR(40) NOT NULL,
-    ten_thuoc NVARCHAR(40) NOT NULL,
-    mo_ta TEXT,
+    id_thuoc VARCHAR(255) PRIMARY KEY,
+    ten_thuoc NVARCHAR(255) NOT NULL,
+    mo_ta TEXT NOT NULL,
     gia DECIMAL NOT NULL,
     hinh_anh_thuoc VARCHAR(255),
-    noi_san_xuat NVARCHAR(100),
-    thuong_hieu NVARCHAR(100),
-    so_luong_ton_kho INT NOT NULL,
-    CONSTRAINT pk_thuoc PRIMARY KEY (id_thuoc)
+    thuong_hieu NVARCHAR(40),
+    noi_san_xuat NVARCHAR(40),
+    so_luong_ton_kho INT
 );
+INSERT INTO thuoc (id_thuoc, ten_thuoc, mo_ta, gia, hinh_anh_thuoc, thuong_hieu, noi_san_xuat, so_luong_ton_kho) 
+VALUES
+(1, 'Thuốc ho Bảo Thanh', 'Giảm ho, bổ phế, hỗ trợ điều trị viêm họng', 50000, 'images/thuoc-ho-bao-thanh.jpg', 'Bảo Thanh', 'Việt Nam', 100),
+(2, 'Vitamin C 500mg', 'Tăng cường sức đề kháng, chống oxy hóa', 150000, 'images/vitamin-c-500mg.jpg', 'Mega We Care', 'Thái Lan', 200),
+(3, 'Thuốc cảm cúm', 'Hạ sốt, giảm đau do cảm cúm', 30000, 'images/efferalgan.jpg', 'Sanofi', 'Pháp', 150),
+(4, 'Dung dịch sát khuẩn', 'Kháng khuẩn, hỗ trợ điều trị vết thương', 80000, 'images/betadine.jpg', 'Betadine', 'Mỹ', 120),
+(5, 'Khẩu trang y tế', 'Chống bụi, ngăn ngừa vi khuẩn', 2000, 'images/khau-trang-y-te.jpg', 'Nam Anh', 'Việt Nam', 500),
+(6, 'Gạc y tế tiệt trùng', 'Băng bó vết thương, vô trùng', 10000, 'images/gac-y-te.jpg', 'Medicare', 'Việt Nam', 300),
+(7, 'Thuốc bổ não', 'Tăng cường tuần hoàn não, cải thiện trí nhớ', 250000, 'images/ginkgo-biloba.jpg', 'Healthy Care', 'Úc', 50),
+(8, 'Kem dưỡng da', 'Dưỡng ẩm, làm mềm da', 180000, 'images/nivea.jpg', 'Nivea', 'Đức', 100),
+(9, 'Dầu khuynh diệp', 'Giảm đau, chống viêm', 50000, 'images/dau-khuynh-diep.jpg', 'Nhà thuốc Đông Y', 'Việt Nam', 200),
+(10, 'Nhiệt kế điện tử', 'Đo nhiệt độ cơ thể nhanh chóng', 350000, 'images/omron-thermometer.jpg', 'Omron', 'Nhật Bản', 80),
+(11, 'Thuốc đau dạ dày', 'Giảm đau, hỗ trợ điều trị viêm loét dạ dày', 60000, 'images/yumangel.jpg', 'Yuhan', 'Hàn Quốc', 100),
+(12, 'Dung dịch rửa tay', 'Diệt khuẩn, bảo vệ da tay', 45000, 'images/lifebuoy.jpg', 'Lifebuoy', 'Việt Nam', 400),
+(13, 'Vitamin E 400IU', 'Dưỡng da, chống oxy hóa', 200000, 'images/vitamin-e.jpg', 'Puritan''s Pride', 'Mỹ', 150),
+(14, 'Kem chống nắng', 'Bảo vệ da khỏi tia UV, chống nước', 550000, 'images/anessa.jpg', 'Anessa', 'Nhật Bản', 50),
+(15, 'Thuốc nhỏ mắt', 'Dưỡng mắt, giảm mỏi mắt', 75000, 'images/v-rohto.jpg', 'Rohto', 'Nhật Bản', 120),
+(16, 'Băng keo cá nhân', 'Bảo vệ vết thương nhỏ, kháng khuẩn', 2000, 'images/urgo.jpg', 'Urgo', 'Pháp', 300),
+(17, 'Thuốc giảm đau', 'Giảm đau, hạ sốt', 30000, 'images/panadol.jpg', 'GSK', 'Anh', 250),
+(18, 'Sữa rửa mặt', 'Làm sạch da, dịu nhẹ', 220000, 'images/cetaphil.jpg', 'Cetaphil', 'Canada', 100),
+(19, 'Dầu gội trị gàu', 'Loại bỏ gàu, nuôi dưỡng tóc', 120000, 'images/head-and-shoulders.jpg', 'P&G', 'Mỹ', 200),
+(20, 'Vitamin B12 1000mcg', 'Hỗ trợ sản xuất hồng cầu, cải thiện sức khỏe', 250000, 'images/vitamin-b12.jpg', 'Nature''s Bounty', 'Mỹ', 150);
 
+
+GO
 CREATE TABLE gio_hang (
-    id_gio_hang VARCHAR(40) NOT NULL,
-    id_khach_hang VARCHAR(40) NOT NULL,
-    id_thuoc VARCHAR(40) NOT NULL,
+    id_gio_hang VARCHAR(255) PRIMARY KEY,
+    id_khach_hang VARCHAR(255) NOT NULL,
+    id_thuoc VARCHAR(255) NOT NULL,
     so_luong INT NOT NULL,
     gia_ban DECIMAL NOT NULL,
-    CONSTRAINT pk_gio_hang PRIMARY KEY (id_gio_hang)
+    FOREIGN KEY (id_thuoc) REFERENCES thuoc(id_thuoc)
 );
+INSERT INTO gio_hang (id_gio_hang, id_khach_hang, id_thuoc, so_luong, gia_ban) VALUES
+(1, 1, 1, 2, 50000),
+(2, 1, 2, 1, 50000),
+(3, 3, 3, 3, 30000),
+(4, 4, 4, 1, 20000),
+(5, 4, 5, 4, 5000),
+(6, 5, 6, 6, 4000),
+(7, 7, 7, 2, 70000),
+(8, 7, 8, 1, 90000),
+(9, 7, 9, 3, 50000),
+(10, 8, 10, 4, 80000),
+(11, 10, 11, 5, 15000),
+(12, 11, 12, 1, 22500),
+(13, 11, 13, 2, 40000),
+(14, 12, 14, 1, 550000),
+(15, 14, 15, 3, 25000),
+(16, 14, 16, 1, 10000),
+(17, 14, 17, 2, 30000);
 
-CREATE TABLE don_hang (
-    id_don_hang VARCHAR(40) NOT NULL,
-    id_khach_hang VARCHAR(40) NOT NULL,
-    ngay_dat_hang DATE NOT NULL,
-    tong_tien DECIMAL NOT NULL,
+GO
+CREATE TABLE dat_hang (
+    id_dat_hang VARCHAR(255) PRIMARY KEY,
+    id_khach_hang VARCHAR(255) NOT NULL,
+    ngay_tao DATE NOT NULL,
     trang_thai NVARCHAR(40) NOT NULL,
-    CONSTRAINT pk_dat_hang PRIMARY KEY (id_don_hang)
+    tong_tien DECIMAL NOT NULL,
+    FOREIGN KEY (id_khach_hang) REFERENCES khach_hang(id_khach_hang)
 );
+INSERT INTO dat_hang (id_dat_hang, id_khach_hang, ngay_dat_hang, trang_thai, tong_tien) 
+VALUES
+(1, 1, '2024-11-01', 'Đặt hàng thành công', 150000),
+(2, 3, '2024-11-03', 'Đã huỷ', 90000),
+(3, 4, '2024-11-04', 'Đặt hàng thành công', 40000),
+(4, 5, '2024-11-05', 'Chờ xử lý', 24000),
+(5, 7, '2024-11-07', 'Đặt hàng thành công', 380000),
+(6, 8, '2024-11-08', 'Đặt hàng thành công', 320000),
+(7, 10, '2024-11-10', 'Đặt hàng thành công', 75000);
 
+
+GO
 CREATE TABLE chi_tiet_don_hang (
-    id_chi_tiet_don_hang VARCHAR(40) NOT NULL,
-    id_don_hang VARCHAR(40) NOT NULL,
-    id_thuoc VARCHAR(40) NOT NULL,
+    id_don_hang VARCHAR(255) PRIMARY KEY,
+    id_dat_hang VARCHAR(255) NOT NULL,
+    id_thuoc VARCHAR(255) NOT NULL,
     so_luong INT NOT NULL,
-    gia_ban DECIMAL NOT NULL,
+    don_gia DECIMAL NOT NULL,
     thanh_tien DECIMAL AS (so_luong * gia_ban) STORED,
-    CONSTRAINT pk_chi_tiet_don_hang PRIMARY KEY (id_chi_tiet_don_hang)
+    FOREIGN KEY (id_dat_hang) REFERENCES dat_hang(id_don_hang),
+    FOREIGN KEY (id_thuoc) REFERENCES thuoc(id_thuoc)
 );
+INSERT INTO chi_tiet_don_hang (id_don_hang, id_dat_hang, id_thuoc, so_luong, don_gia, thanh_tien) 
+VALUES 
+(1, 1, 2, 2, 50000, 100000),
+(10, 6, 10, 4, 80000, 320000),
+(2, 1, 2, 1, 50000, 50000),
+(3, 2, 3, 3, 30000, 90000),
+(4, 3, 3, 1, 20000, 20000),
+(5, 3, 5, 4, 5000, 20000),
+(6, 4, 6, 6, 4000, 24000),
+(7, 5, 7, 2, 70000, 140000),
+(8, 5, 8, 1, 90000, 90000),
+(9, 5, 9, 3, 50000, 150000);
 
+
+GO
 CREATE TABLE thanh_toan (
-    id_thanh_toan VARCHAR(40) NOT NULL,
+    id_thanh_toan VARCHAR(40) PRIMARY KEY,
     id_dat_hang VARCHAR(40) NOT NULL,
-    phuong_thuc_thanh_toan NVARCHAR(40) NOT NULL,
-    so_tien DECIMAL NOT NULL,
     trang_thai_thanh_toan NVARCHAR(40) NOT NULL DEFAULT 'Chưa thanh toán',
-    ngay_thanh_toan DATE NOT NULL,
-    CONSTRAINT pk_thanh_toan PRIMARY KEY (id_thanh_toan)
+    so_tien DECIMAL NOT NULL,
+    phuong_thuc_thanh_toan NVARCHAR(40) NOT NULL DEFAULT 'Thanh toán khi nhận hàng'  
+    FOREIGN KEY (id_dat_hang) REFERENCES dat_hang(id_dat_hang)
 );
+INSERT INTO thanh_toan (id_thanh_toan, id_dat_hang, trang_thai_thanh_toan, so_tien, phuong_thuc_thanh_toan)
+VALUES 
+(1, 1, 'Đã thanh toán', 150000, 'Thẻ tín dụng'),
+(2, 2, 'Chưa thanh toán', 60000, 'Thanh toán khi nhận hàng'),
+(3, 3, 'Đã thanh toán', 40000, 'Thanh toán khi nhận hàng'),
+(4, 4, 'Đang xử lý', 24000, 'Thanh toán khi nhận hàng'),
+(5, 5, 'Đã hoàn tiền', 380000, 'Thẻ tín dụng'),
+(6, 6, 'Đã thanh toán', 320000, 'Thẻ tín dụng');
 
+GO
 CREATE TABLE van_chuyen (
-    id_van_chuyen VARCHAR(40) NOT NULL,
+    id_van_chuyen VARCHAR(40) PRIMARY KEY,
     id_dat_hang VARCHAR(40) NOT NULL,
+    trang_thai_van_chuyen NVARCHAR(40) NOT NULL DEFAULT 'Chưa giao',
+    phuong_thuc_van_chuyen NVARCHAR(40) NOT NULL DEFAULT 'Tiêu chuẩn',
+    ngay_giao_hang DATE NOT NULL,  
     ngay_van_chuyen DATE NOT NULL,
-    ngay_giao_hang DATE NOT NULL,
-    trang_thai_van_chuyen NVARCHAR(40) NOT NULL DEFAULT 'Chưa hoàn thành',
-    CONSTRAINT pk_van_chuyen PRIMARY KEY (id_van_chuyen)
+    FOREIGN KEY (id_dat_hang) REFERENCES dat_hang(id_dat_hang)
 );
+INSERT INTO van_chuyen (id_van_chuyen, id_dat_hang, trang_thai_van_chuyen, phuong_thuc_van_chuyen, ngay_giao_hang, ngay_van_chuyen)
+VALUES 
+(1, 1, 'Đã giao hàng', 'Nhanh', '2024-11-07', '2024-11-08'),
+(3, 3, 'Chưa giao', 'Tiêu chuẩn', '2024-11-16', '2024-11-18'),
+(4, 4, 'Đang giao', 'Nhanh', '2024-11-17', '2024-11-15'),
+(5, 5, 'Hủy giao hàng', 'Tiết kiệm', NULL, '2024-11-10'),
+(6, 6, 'Đã giao hàng', 'Tiêu chuẩn', '2024-11-12', '2024-11-10');
 
+GO
 CREATE TABLE danh_gia (
-    id_danh_gia VARCHAR(40) NOT NULL,
-    id_khach_hang VARCHAR(40) NOT NULL,
-    id_thuoc VARCHAR(40) NOT NULL,
+    id_danh_gia VARCHAR(255) PRIMARY KEY,
+    id_khach_hang VARCHAR(255) NOT NULL,
+    id_thuoc VARCHAR(255) NOT NULL,
     diem_danh_gia INT NOT NULL DEFAULT 5, 
     binh_luan TEXT,
     ngay_danh_gia DATE NOT NULL,
-    CONSTRAINT pk_danh_gia PRIMARY KEY (id_danh_gia)
+    FOREIGN KEY (id_khach_hang) REFERENCES khach_hang(id_khach_hang),
+    FOREIGN KEY (id_thuoc) REFERENCES thuoc(id_thuoc)
 );
+INSERT INTO danh_gia (id_danh_gia, id_khach_hang, id_thuoc, diem_xep_hang, binh_luan, ngay_danh_gia) 
+VALUES  
+(1, 1, 1, 5, 'Sản phẩm rất tốt, giao hàng nhanh.', '2024-11-10'),  
+(3, 3, 5, 3, 'Tác dụng trung bình, giá hơi cao.', '2024-11-13'),  
+(4, 4, 2, 2, 'Đồng gói kém, sản phẩm bị hư hỏng.', '2024-11-14'),  
+(5, 1, 4, 4, 'Giao hàng đúng hẹn, thuốc ổn.', '2024-11-15'),  
+(6, 2, 6, 5, 'Dịch vụ tuyệt vời, rất hài lòng.', '2024-11-16');
 
--- Bảng quan_ly_cua_hang
-ALTER TABLE quan_ly_cua_hang
-ADD CONSTRAINT fk_quan_ly_cua_hang_nguoi_dung FOREIGN KEY (id_nguoi_dung)
-REFERENCES nguoi_dung(id_nguoi_dung);
-
--- Bảng khach_hang
-ALTER TABLE khach_hang
-ADD CONSTRAINT fk_khach_hang_nguoi_dung FOREIGN KEY (id_khach_hang)
-REFERENCES nguoi_dung(id_nguoi_dung);
-
--- Bảng gio_hang
-ALTER TABLE gio_hang
-ADD CONSTRAINT fk_gio_hang_khach_hang FOREIGN KEY (id_khach_hang)
-REFERENCES khach_hang(id_khach_hang),
-ADD CONSTRAINT fk_gio_hang_thuoc FOREIGN KEY (id_thuoc)
-REFERENCES thuoc(id_thuoc);
-
--- Bảng don_hang
-ALTER TABLE don_hang
-ADD CONSTRAINT fk_don_hang_khach_hang FOREIGN KEY (id_khach_hang)
-REFERENCES khach_hang(id_khach_hang);
-
--- Bảng chi_tiet_don_hang
-ALTER TABLE chi_tiet_don_hang
-ADD CONSTRAINT fk_chi_tiet_don_hang_don_hang FOREIGN KEY (id_don_hang)
-REFERENCES don_hang(id_don_hang),
-ADD CONSTRAINT fk_chi_tiet_don_hang_thuoc FOREIGN KEY (id_thuoc)
-REFERENCES thuoc(id_thuoc);
-
--- Bảng thanh_toan
-ALTER TABLE thanh_toan
-ADD CONSTRAINT fk_thanh_toan_don_hang FOREIGN KEY (id_dat_hang)
-REFERENCES don_hang(id_don_hang);
-
--- Bảng van_chuyen
-ALTER TABLE van_chuyen
-ADD CONSTRAINT fk_van_chuyen_don_hang FOREIGN KEY (id_dat_hang)
-REFERENCES don_hang(id_don_hang);
-
--- Bảng danh_gia
-ALTER TABLE danh_gia
-ADD CONSTRAINT fk_danh_gia_khach_hang FOREIGN KEY (id_khach_hang)
-REFERENCES khach_hang(id_khach_hang),
-ADD CONSTRAINT fk_danh_gia_thuoc FOREIGN KEY (id_thuoc)
-REFERENCES thuoc(id_thuoc);
-
--- Bảng nguoi_dung
-INSERT INTO nguoi_dung (id_nguoi_dung, vai_tro, ten_nguoi_dung, so_dien_thoai, email, mat_khau, dia_chi) VALUES
-('ND001', 'Khách hàng', 'Nguyen Van A', '0912345678', 'a@example.com', 'pass123', '123 Street A'),
-('ND002', 'Quản lý', 'Le Thi B', '0987654321', 'b@example.com', 'pass123', '456 Street B'),
-('ND003', 'Khách hàng', 'Tran Van C', '0909123456', 'c@example.com', 'pass123', '789 Street C'),
-('ND004', 'Nhân viên', 'Pham Thi D', '0912456789', 'd@example.com', 'pass123', '101 Street D'),
-('ND005', 'Khách hàng', 'Hoang Van E', '0923456781', 'e@example.com', 'pass123', '202 Street E');
-
--- Bảng quan_ly_cua_hang
-INSERT INTO quan_ly_cua_hang (id_quan_ly_cua_hang, ngay_bat_dau, chuc_vu, id_nguoi_dung) VALUES
-('QL001', '2023-01-01', 'Quản lý', 'ND002'),
-('QL002', '2023-02-15', 'Quản lý', 'ND004'),
-('QL003', '2023-03-10', 'Quản lý', 'ND002'),
-('QL004', '2023-04-05', 'Trợ lý quản lý', 'ND004'),
-('QL005', '2023-05-20', 'Quản lý', 'ND002');
-
--- Bảng khach_hang
-INSERT INTO khach_hang (id_khach_hang, ngay_dang_ki) VALUES
-('ND001', '2023-01-05'),
-('ND003', '2023-02-10'),
-('ND005', '2023-03-15'),
-('ND006', '2023-04-20'),
-('ND007', '2023-05-25');
-
--- Bảng thuoc
-INSERT INTO thuoc (id_thuoc, ten_thuoc, mo_ta, gia, hinh_anh_thuoc, noi_san_xuat, thuong_hieu, so_luong_ton_kho) VALUES
-('T001', 'Thuốc A', 'Thuốc giảm đau', 50000, 'hinhA.jpg', 'Việt Nam', 'Hãng A', 100),
-('T002', 'Thuốc B', 'Thuốc cảm cúm', 30000, 'hinhB.jpg', 'Việt Nam', 'Hãng B', 200),
-('T003', 'Thuốc C', 'Vitamin C', 25000, 'hinhC.jpg', 'Mỹ', 'Hãng C', 150),
-('T004', 'Thuốc D', 'Thuốc bổ', 60000, 'hinhD.jpg', 'Nhật Bản', 'Hãng D', 120),
-('T005', 'Thuốc E', 'Thuốc đau đầu', 55000, 'hinhE.jpg', 'Pháp', 'Hãng E', 80);
-
--- Bảng gio_hang
-INSERT INTO gio_hang (id_gio_hang, id_khach_hang, id_thuoc, so_luong, gia_ban) VALUES
-('GH001', 'ND001', 'T001', 2, 50000),
-('GH002', 'ND003', 'T002', 1, 30000),
-('GH003', 'ND005', 'T003', 3, 25000),
-('GH004', 'ND006', 'T004', 1, 60000),
-('GH005', 'ND007', 'T005', 2, 55000);
-
--- Bảng don_hang
-INSERT INTO don_hang (id_don_hang, id_khach_hang, ngay_dat_hang, tong_tien, trang_thai) VALUES
-('DH001', 'ND001', '2023-01-15', 100000, 'Đang xử lý'),
-('DH002', 'ND003', '2023-02-18', 30000, 'Đã giao'),
-('DH003', 'ND005', '2023-03-22', 75000, 'Đang vận chuyển'),
-('DH004', 'ND006', '2023-04-25', 60000, 'Đang xử lý'),
-('DH005', 'ND007', '2023-05-30', 110000, 'Đã giao');
-
--- Bảng chi_tiet_don_hang
-INSERT INTO chi_tiet_don_hang (id_chi_tiet_don_hang, id_don_hang, id_thuoc, so_luong, gia_ban) VALUES
-('CTDH001', 'DH001', 'T001', 2, 50000),
-('CTDH002', 'DH002', 'T002', 1, 30000),
-('CTDH003', 'DH003', 'T003', 3, 25000),
-('CTDH004', 'DH004', 'T004', 1, 60000),
-('CTDH005', 'DH005', 'T005', 2, 55000);
-
--- Bảng thanh_toan
-INSERT INTO thanh_toan (id_thanh_toan, id_dat_hang, phuong_thuc_thanh_toan, so_tien, trang_thai_thanh_toan, ngay_thanh_toan) VALUES
-('TT001', 'DH001', 'Thẻ tín dụng', 100000, 'Đã thanh toán', '2023-01-16'),
-('TT002', 'DH002', 'Tiền mặt', 30000, 'Đã thanh toán', '2023-02-19'),
-('TT003', 'DH003', 'Thẻ tín dụng', 75000, 'Đã thanh toán', '2023-03-23'),
-('TT004', 'DH004', 'Chuyển khoản', 60000, 'Chưa thanh toán', '2023-04-26'),
-('TT005', 'DH005', 'Thẻ tín dụng', 110000, 'Đã thanh toán', '2023-05-31');
-
--- Bảng van_chuyen
-INSERT INTO van_chuyen (id_van_chuyen, id_dat_hang, ngay_van_chuyen, ngay_giao_hang, trang_thai_van_chuyen) VALUES
-('VC001', 'DH001', '2023-01-17', '2023-01-20', 'Hoàn thành'),
-('VC002', 'DH002', '2023-02-20', '2023-02-23', 'Hoàn thành'),
-('VC003', 'DH003', '2023-03-24', '2023-03-28', 'Đang vận chuyển'),
-('VC004', 'DH004', '2023-04-27', '2023-04-30', 'Đang xử lý'),
-('VC005', 'DH005', '2023-05-31', '2023-06-03', 'Hoàn thành');
-
--- Bảng danh_gia
-INSERT INTO danh_gia (id_danh_gia, id_khach_hang, id_thuoc, diem_danh_gia, binh_luan, ngay_danh_gia) VALUES
-('DG001', 'ND001', 'T001', 5, 'Rất tốt', '2023-01-18'),
-('DG002', 'ND003', 'T002', 4, 'Khá hài lòng', '2023-02-21'),
-('DG003', 'ND005', 'T003', 3, 'Bình thường', '2023-03-25'),
-('DG004', 'ND006', 'T004', 5, 'Xuất sắc', '2023-04-28'),
-('DG005', 'ND007', 'T005', 2, 'Không hài lòng', '2023-06-01');
-
--- Tạo view
--- View danh sách thuốc và thông tin cơ bản
 CREATE VIEW view_danh_sach_thuoc AS
 SELECT 
     id_thuoc,
@@ -233,11 +254,10 @@ SELECT
     so_luong_ton_kho
 FROM thuoc;
 
--- View danh sách đơn hàng chi tiết
-CREATE VIEW vw_danh_sach_don_hang_chi_tiet AS
+CREATE VIEW view_danh_sach_don_hang_chi_tiet AS
 SELECT 
     dh.id_dat_hang,
-    nd.ten_nguoi_dung,  -- Sử dụng bảng nguoi_dung
+    nd.ten_nguoi_dung,
     dh.ngay_tao,
     dh.trang_thai,
     dh.tong_tien,
@@ -251,14 +271,29 @@ FROM
 JOIN 
     khach_hang kh ON dh.id_khach_hang = kh.id_khach_hang
 JOIN 
-    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung  -- Thêm JOIN với nguoi_dung
+    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung
 JOIN 
     chi_tiet_don_hang ctdh ON dh.id_dat_hang = ctdh.id_dat_hang
 JOIN 
     thuoc t ON ctdh.id_thuoc = t.id_thuoc;
 
--- View tổng doanh thu theo tháng
-CREATE VIEW vw_tong_doanh_thu_theo_thang AS
+CREATE VIEW view_danh_sach_khach_hang_dat_hang AS
+SELECT 
+    kh.id_khach_hang,
+    nd.ten_nguoi_dung,
+    COUNT(dh.id_dat_hang) AS so_don_hang,
+    SUM(dh.tong_tien) AS tong_tien
+    FROM 
+    khach_hang kh
+    JOIN 
+    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung
+    JOIN
+    dat_hang dh ON kh.id_khach_hang = dh.id_khach_hang
+    GROUP BY 
+    kh.id_khach_hang,
+    nd.ten_nguoi_dung;
+
+CREATE VIEW view_tong_doanh_thu_theo_thang AS
 SELECT 
     MONTH(dh.ngay_tao) AS thang,
     YEAR(dh.ngay_tao) AS nam,
@@ -266,11 +301,23 @@ SELECT
 FROM 
     dat_hang dh
 WHERE 
-    dh.trang_thai = 'Đặt hàng thành công'
+    dh.trang_thai = N'Đặt hàng thành công'
 GROUP BY 
-    MONTH(dh.ngay_tao), YEAR(dh.ngay_tao)
+    YEAR(dh.ngay_tao), MONTH(dh.ngay_tao)
 ORDER BY 
     nam, thang;
+
+CREATE VIEW view_danh_sach_thuoc AS
+SELECT 
+    id_thuoc,
+    ten_thuoc,
+    mo_ta,
+    gia,
+    hinh_anh_thuoc,
+    thuong_hieu,
+    noi_san_xuat,
+    so_luong_ton_kho
+FROM thuoc;
 
 -- View trạng thái vận chuyển
 CREATE VIEW vw_trang_thai_van_chuyen AS
@@ -290,7 +337,7 @@ JOIN
 CREATE VIEW vw_danh_gia_san_pham AS
 SELECT 
     d.id_danh_gia,
-    nd.ten_nguoi_dung,  -- Sử dụng bảng nguoi_dung để lấy tên người dùng
+    nd.ten_nguoi_dung,  
     t.ten_thuoc,
     d.diem_xep_hang,
     d.binh_luan,
@@ -300,7 +347,7 @@ FROM
 JOIN 
     khach_hang kh ON d.id_khach_hang = kh.id_khach_hang
 JOIN 
-    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung  -- Thêm JOIN với nguoi_dung
+    nguoi_dung nd ON kh.id_nguoi_dung = nd.id_nguoi_dung  
 JOIN 
     thuoc t ON d.id_thuoc = t.id_thuoc;
 
@@ -316,8 +363,8 @@ SELECT
     END AS trang_thai_ton_kho
 FROM thuoc;
 
---Tạo Truy vấn
--- Truy vấn khách hàng mua nhiều nhất
+-- Truy van
+-- Khach hang mua nhieu nhat
 SELECT 
     nd.id_nguoi_dung,
     nd.ten_nguoi_dung,
@@ -334,8 +381,7 @@ WHERE
     nd.vai_tro = 'Khách hàng'
 GROUP BY kh.id_khach_hang
 ORDER BY so_luong_don_hang DESC;
-
--- Truy vấn sản phẩm bán chạy nhất
+-- San pham ban chay nhat
 SELECT 
     t.id_thuoc,
     t.ten_thuoc,
@@ -343,13 +389,12 @@ SELECT
     t.gia,
     SUM(ctdh.so_luong) AS tong_so_luong
 FROM
-    (thuoc AS t
-    INNER JOIN (chi_tiet_don_hang AS ctdh) ON ctdh.id_thuoc = t.id_thuoc)
-GROUP BY t.id_thuoc
-ORDER BY tong_so_luong DESC
+    thuoc AS t
+JOIN chi_tiet_don_hang AS ctdh ON ctdh.id_thuoc = t.id_thuoc
+GROUP BY t.id_thuoc, t.ten_thuoc, t.mo_ta, t.gia
+ORDER BY tong_so_luong DESC;
 
--- Truy vấn doanh thu theo từng khách hàng
-SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+-- Doanh thu theo tung khach hang
 SELECT 
     nd.id_nguoi_dung,
     nd.vai_tro,
@@ -358,14 +403,14 @@ SELECT
     nd.so_dien_thoai,
     nd.dia_chi,
     kh.ngay_dang_ki,
-    dh.id_dat_hang,
     SUM(ctdh.thanh_tien) AS doanh_thu_theo_nguoi_dung
 FROM
-    ((nguoi_dung AS nd
-    INNER JOIN (khach_hang AS kh
-    INNER JOIN dat_hang AS dh ON dh.id_khach_hang = kh.id_khach_hang AND dh.trang_thai = 'Đặt hàng thành công') ON kh.id_nguoi_dung = nd.id_nguoi_dung)
-    INNER JOIN chi_tiet_don_hang AS ctdh ON ctdh.id_dat_hang = dh.id_dat_hang)
-GROUP BY nd.id_nguoi_dung
+    nguoi_dung AS nd
+JOIN khach_hang AS kh ON kh.id_nguoi_dung = nd.id_nguoi_dung
+JOIN dat_hang AS dh ON dh.id_khach_hang = kh.id_khach_hang AND dh.trang_thai = N'Đặt hàng thành công'
+JOIN chi_tiet_don_hang AS ctdh ON ctdh.id_dat_hang = dh.id_dat_hang
+GROUP BY 
+    nd.id_nguoi_dung, nd.vai_tro, nd.ten_nguoi_dung, nd.email, nd.so_dien_thoai, nd.dia_chi, kh.ngay_dang_ki
 ORDER BY doanh_thu_theo_nguoi_dung DESC;
 
 -- Truy vấn đơn hàng đang giao hoặc bị huỷ
